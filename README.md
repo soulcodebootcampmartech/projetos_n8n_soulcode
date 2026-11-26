@@ -12,3 +12,7 @@ Esses *não* possuem Agents de IA
 * Fase 2 - Após aprovação do conteúdo gerado pela LLM, seguirá para o envio por email.
 
   [Acesse o projeto](https://github.com/soulcodebootcampmartech/projetos_n8n_soulcode/blob/main/escola.json)
+
+---
+#### Autor : Seu Nome
+[Linkedin](https://br.linkedin.com/in/seunome)
