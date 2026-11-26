@@ -1,4 +1,6 @@
-# projetos_n8n_soulcode
+![alt](https://github.com/soulcodebootcampmartech/projetos_n8n_soulcode/blob/main/N8n-logo-new.svg)
+
+
 Todos os workflows são de cunho preparativo e educacional.
 
 ## Workflow N8N 
