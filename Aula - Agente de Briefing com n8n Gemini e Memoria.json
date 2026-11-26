@@ -1,0 +1,151 @@
+{
+  "name": "Aula - Agente de Briefing com n8n Gemini e Memoria",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c74a2f5b-7c3a-4506-9a0a-cd324e64cbcc",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        256
+      ],
+      "webhookId": "1e8dddd2-3de9-4409-860c-ea39de1dfbd6"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Você é um assistente de briefing de marketing para uso educacional.\nIDENTIDADE: especialista em organização de briefings de campanhas, com linguagem clara, profissional e acolhedora.\nOBJETIVO: coletar informações essenciais e estruturar um briefing para revisão humana.\nREGRAS:\n1. Responda em português brasileiro.\n2. Para preparar o briefing, identifique cliente/marca, produto ou serviço, objetivo, público-alvo, canal e tom de voz.\n3. Faça no máximo duas perguntas objetivas por resposta quando faltarem informações; não suponha os dados ausentes.\n4. Utilize informações fornecidas anteriormente nesta mesma sessão quando disponíveis; se houver contradições, peça confirmação.\n5. Não invente preços, descontos, benefícios, datas, certificações, resultados ou promessas de vendas.\n6. Não solicite dados pessoais reais: use marcas e contatos fictícios nos testes.\n7. Não afirme ter publicado ou enviado nada. Este workflow apenas conversa e calcula quando necessário.\n8. Para cálculos de orçamento solicitados pelo usuário, use a ferramenta Calculator quando apropriado, deixando as porcentagens e valores claros.\n9. Você não deve responder perguntas não relacionadas a \"Briefing de marketing\". \nFORMATO: Quando houver dados suficientes, apresente: Marca, Produto/serviço, Objetivo, Público-alvo, Canal, Tom de voz, Mensagem central, Sugestão de conteúdo e Pendências para validação humana.\nSe os dados forem insuficientes, pergunte o que falta em vez de inventar um briefing completo.",
+          "maxIterations": 5
+        }
+      },
+      "id": "6b1626e4-6573-4dd5-879e-d44c470ef12d",
+      "name": "AI Agent - Briefing de Marketing",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite-preview",
+        "options": {}
+      },
+      "id": "c85adeff-2918-4da3-9280-56003486c755",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        176,
+        512
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zK3sCfSJbAkWQdDX",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "7426ced7-17a1-4351-a5bf-5bae1c52c0cf",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        512
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "76a2cb82-69ca-40b8-adea-5a30456a3fda",
+      "name": "Calculator",
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        624,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Laboratório — Assistente de Briefing (Gemini + Memória)\n1. Abra **Google Gemini Chat Model**, selecione uma credencial própria e confirme um modelo com **Free Tier** disponível em sua conta.\n2. Use **Chat** para testar com uma sessão única.\n3. **Simple Memory** guarda histórico por sessão neste ambiente; não é armazenamento persistente garantido.\n4. **Calculator** é uma ferramenta opcional.\n5. Não há publicação nem envio: este agente apenas auxilia a estruturar o briefing.",
+        "height": 190,
+        "width": 830
+      },
+      "id": "71495415-d18f-4e20-9894-783abbb606b0",
+      "name": "Nota - configurar credenciais",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Briefing de Marketing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Briefing de Marketing",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent - Briefing de Marketing",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Briefing de Marketing",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6be8139f-bbbd-46c2-843f-d413747ee97a",
+  "meta": {
+    "instanceId": "a373559eee82461f8180b72f811a7174cf65b79b212d47460ed23bdc63032024"
+  },
+  "nodeGroups": [],
+  "id": "YH70at5YxIdKVxCO",
+  "tags": []
+}

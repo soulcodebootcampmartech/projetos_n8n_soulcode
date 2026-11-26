@@ -1,0 +1,263 @@
+{
+  "name": "briefing",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Briefing\n",
+        "height": 400,
+        "width": 1040
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -288,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "59c8dbde-e106-42d6-ae4e-72b2b1dd636f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        80
+      ],
+      "id": "3386097d-0e7b-42b0-ad90-b0b4cbf50c6c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "75d13647-36ac-4805-8275-6b2c03862fc1",
+              "name": "cliente",
+              "value": "Café Horizonte",
+              "type": "string"
+            },
+            {
+              "id": "c1a3e57b-c0d4-4e50-b67e-8aa5690e074b",
+              "name": "=campanha",
+              "value": "Lançamento do cardápio de Verão",
+              "type": "string"
+            },
+            {
+              "id": "98b24850-4e84-4834-9a7f-341a9ba1a27e",
+              "name": "objetivo",
+              "value": "Divulgar novos produtos sazonais",
+              "type": "string"
+            },
+            {
+              "id": "27f94c6d-23eb-43f5-9e39-e316615d9016",
+              "name": "publico_alvo",
+              "value": "Jovens adultos de 20 a 35 anos",
+              "type": "string"
+            },
+            {
+              "id": "fbda257c-2474-415f-aa02-6f4b5bc99adf",
+              "name": "canal",
+              "value": "Instagram",
+              "type": "string"
+            },
+            {
+              "id": "4652e3b3-32ea-448c-ab5a-0fcdd499179b",
+              "name": "formato",
+              "value": "carrossel",
+              "type": "string"
+            },
+            {
+              "id": "24fcbd7e-d843-4319-a63d-f66566415dfd",
+              "name": "tom_usado",
+              "value": "Descontraído e acolhedor",
+              "type": "string"
+            },
+            {
+              "id": "0048c6e3-e194-492f-b8be-622329ea11cc",
+              "name": "data_inicio",
+              "value": "01/12/2026",
+              "type": "string"
+            },
+            {
+              "id": "2acd3aae-695f-4b91-b843-c1a1b720fb29",
+              "name": "data_final",
+              "value": "31/12/2026",
+              "type": "string"
+            },
+            {
+              "id": "25cbab3b-eeb5-482b-9a1d-652081bd271e",
+              "name": "responsavel",
+              "value": "Equipe de Marketing",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -80,
+        80
+      ],
+      "id": "7041c82d-57ed-4f1a-8157-36215580daee",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "bebce951-c667-4d35-9c96-0db8f07572b0",
+              "leftValue": "={{ $json.cliente }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "fdce8862-d2f2-420d-8e4e-e3d052df9e95",
+              "leftValue": "={{ $json.campanha }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9d4c5bad-e12c-4812-8445-dc339b75faa1",
+              "leftValue": "={{ $json.objetivo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        144,
+        80
+      ],
+      "id": "9aba776d-e940-4d62-ac3d-c5f9d0e7871d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "const dados = $input.item.json;\n\nconst titulo = ` Briefing - ${dados.cliente}` ;\n\nconst conteudo = ` \n\nBRIENFING DE CAMPANHA\n\n1.IDENTIFICAÇÃO\n\nCliente: ${dados.cliente}\nCampanha: ${dados.campanha}\nResponsável: ${dados.responsavel}\n\n\n2.OBJETIVO DA CAMPANHA\n${dados.objetivo}\n\n3.Público Alvo\n${dados.publico_alvo}\n\n4.CANAL DE COMUNICAÇÃO\n${dados.canal}\n\n5.FORMATO \n${dados.formato}\n\n6.TOM DE VOZ\n${dados.tom_usado}\n\n7.DATA DA CAMPANHA\nInicio : ${dados.data_inicio}\nFinalização : ${dados.data_final}\n\n8.OBSERVAÇÕES:\nEsse é um documento gerado automaticamente pelo N8N.\nPor favor, você deve realizar a revisão das informações antes da aprovação. `;\n\nreturn{\n  json:{\n    ...dados,\n    titulo,\n    conteudo\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        -16
+      ],
+      "id": "f9686b48-a6db-4888-8efe-7df52da7ac37",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "https://docs.google.com/document/d/1x68WmTgzMLr8O6ObbVtqb4bVoEiQuDN6v-q5FVhXhq8/",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('Code in JavaScript').item.json.conteudo }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        608,
+        -16
+      ],
+      "id": "db0afcbf-be41-4ed8-98ae-2939eaf0435b",
+      "name": "Atualiza arquivo específico",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "F1MD0qjYwS2g7S1O",
+          "name": "Google Docs account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Atualiza arquivo específico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "05be120d-e8df-47f1-bd88-be194f2656e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a2e58b7b089f1b4c2db54a3bf40a2d670f4d80ae651e0cb2b2b9e172a0f7cd99"
+  },
+  "nodeGroups": [],
+  "id": "AIa6HVn71VBwXz83",
+  "tags": []
+}

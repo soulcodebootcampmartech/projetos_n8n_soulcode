@@ -1,0 +1,239 @@
+{
+  "name": "escola",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "191ec900-aac8-4182-95e1-cfc1925e7911",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1KLgGuoTSppBG3lUdwoCw3-1ac71DC-Qp7MfIF_WYrhk",
+          "mode": "list",
+          "cachedResultName": "base_leads_marketing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KLgGuoTSppBG3lUdwoCw3-1ac71DC-Qp7MfIF_WYrhk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1190890675,
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KLgGuoTSppBG3lUdwoCw3-1ac71DC-Qp7MfIF_WYrhk/edit#gid=1190890675"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        160,
+        -16
+      ],
+      "id": "9a69f3d1-76ca-4537-8794-d0fbab22fb79",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WrnVf0gAK7iSNLwH",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 4
+          },
+          "conditions": [
+            {
+              "id": "d768a0eb-a266-4983-879b-86223768b44f",
+              "leftValue": "={{ $json.consentimento }}",
+              "rightValue": "Sim",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "80a99d9d-1c56-4f01-ac23-9eb720f1cec7",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "Pendente",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.4,
+      "position": [
+        352,
+        -16
+      ],
+      "id": "ad2a5c41-fa2d-47e7-8553-aa007d69cc34",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e1ffdab3-c21e-46e7-b959-24cacbbc1fb4",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "number"
+            },
+            {
+              "id": "253267e9-6a23-441d-89ba-088b9bace74e",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "dd5e1c24-6d5a-4374-84e7-8d5db3cb1ea8",
+              "name": "interesse",
+              "value": "={{ $json.interesse }}",
+              "type": "string"
+            },
+            {
+              "id": "3be86c5d-7b3c-4a3f-b1c8-fd9bdcf2a836",
+              "name": "objetivo",
+              "value": "Divulgação do Curso",
+              "type": "string"
+            },
+            {
+              "id": "437f3331-21be-415c-ba96-4c3ada8ea89f",
+              "name": "tom",
+              "value": "Profissional e acolhedor",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        608,
+        -32
+      ],
+      "id": "5166763a-0465-478f-adbd-66f81fde39a6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview",
+          "cachedResultName": "Gemini 3 Flash Preview",
+          "cachedResultUrl": ""
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Você é redator de marketing educacional.\nCrie uma mensagem de e-mail para divulgar um curso.\nNome: {{ $json.nome }}\nInteresse: {{ $json.interesse }}\nObjetivo: apresentar a oportunidade de conhecer o curso.\nTom: profissional, acolhedor e objetivo.\nRegras: máximo de 100 palavras; não inventar preços, descontos, datas, vagas ou certificados; não fazer promessas de emprego; incluir uma chamada para conhecer mais informações; não utilizar dados além dos fornecidos.\nRetorne um assunto e o corpo do e-mail."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        -32
+      ],
+      "id": "7dc10513-a371-494c-b643-0537024b5f59",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "aaWnVNl646p987We",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5a3554e2-e023-4fa5-9d1b-57b7c96a487e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a373559eee82461f8180b72f811a7174cf65b79b212d47460ed23bdc63032024"
+  },
+  "nodeGroups": [],
+  "id": "YvAoyScWXQALY7y6",
+  "tags": []
+}
